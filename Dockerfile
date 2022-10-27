@@ -1,8 +1,8 @@
-FROM ttbb/compile:c AS compiler
+FROM shoothzj/compile:c AS compiler
 
-WORKDIR /opt/sh
+WORKDIR /opt
 
-ARG version=7.0.4
+ARG version=7.0.5
 
 RUN wget -q http://download.redis.io/releases/redis-$version.tar.gz && \
 mkdir redis && \
@@ -11,18 +11,18 @@ cd redis && \
 make
 
 
-FROM ttbb/base
+FROM shoothzj/base
 
-COPY --from=compiler /opt/sh/redis/redis.conf /opt/sh/redis/redis.conf
-COPY --from=compiler /opt/sh/redis/src/redis-sentinel /opt/sh/redis/redis-sentinel
-COPY --from=compiler /opt/sh/redis/src/redis-cli /opt/sh/redis/redis-cli
-COPY --from=compiler /opt/sh/redis/src/redis-server /opt/sh/redis/redis-server
-COPY --from=compiler /opt/sh/redis/src/redis-benchmark /opt/sh/redis/redis-benchmark
-COPY --from=compiler /opt/sh/redis/src/redis-check-rdb /opt/sh/redis/redis-check-rdb
-COPY --from=compiler /opt/sh/redis/src/redis-check-aof /opt/sh/redis/redis-check-aof
+COPY --from=compiler /opt/redis/redis.conf /opt/redis/redis.conf
+COPY --from=compiler /opt/redis/src/redis-sentinel /opt/redis/redis-sentinel
+COPY --from=compiler /opt/redis/src/redis-cli /opt/redis/redis-cli
+COPY --from=compiler /opt/redis/src/redis-server /opt/redis/redis-server
+COPY --from=compiler /opt/redis/src/redis-benchmark /opt/redis/redis-benchmark
+COPY --from=compiler /opt/redis/src/redis-check-rdb /opt/redis/redis-check-rdb
+COPY --from=compiler /opt/redis/src/redis-check-aof /opt/redis/redis-check-aof
 
-RUN ln -s /opt/sh/redis/src/redis-cli /usr/bin/redis-cli
+RUN ln -s /opt/redis/src/redis-cli /usr/bin/redis-cli
 
-ENV REDIS_HOME /opt/sh/redis
+ENV REDIS_HOME /opt/redis
 
-WORKDIR /opt/sh/redis
+WORKDIR /opt/redis
