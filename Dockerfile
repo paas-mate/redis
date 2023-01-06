@@ -2,7 +2,7 @@ FROM shoothzj/compile:c AS compiler
 
 WORKDIR /opt
 
-ARG version=7.0.5
+ARG version=7.0.7
 
 RUN wget -q http://download.redis.io/releases/redis-$version.tar.gz && \
 mkdir redis && \
